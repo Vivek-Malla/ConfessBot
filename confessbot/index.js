@@ -1,6 +1,3 @@
-// =========================
-// 📁 Backend: confessbot/index.js
-// =========================
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -12,13 +9,13 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
-// ✅ Dummy Home Route
+
 app.get('/', (req, res) => {
   console.log("📩 Home route hit!");
   res.send('🎉 ConfessBot is working!');
 });
 
-// 🔐 Firebase Setup
+
 const serviceAccount = require('./firebase.json');
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -26,7 +23,7 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 
-// 🔁 Twilio Webhook
+
 app.post('/sms', async (req, res) => {
   const message = req.body.Body;
   const timestamp = new Date().toISOString();
@@ -44,7 +41,7 @@ app.post('/sms', async (req, res) => {
   res.send(twiml.toString());
 });
 
-// 📤 API: Get Confessions
+
 app.get('/confessions', async (req, res) => {
   try {
     const snapshot = await db.collection('confessions').orderBy('timestamp', 'desc').limit(20).get();
@@ -56,8 +53,8 @@ app.get('/confessions', async (req, res) => {
   }
 });
 
-// 🟢 Start Server
-const PORT = 1000; // Changed to avoid conflict on 5000
+
+const PORT = 1000; 
 app.listen(PORT, () => {
   console.log(`✅ ConfessBot backend running at http://localhost:${PORT}`);
 });
